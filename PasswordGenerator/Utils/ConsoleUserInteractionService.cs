@@ -20,8 +20,8 @@ internal sealed class ConsoleUserInteractionService : IUserInteractionService //
             Console.Write($"{message} ({min}-{max}) : "); // AfficherQuestion
             string input = Console.ReadLine() ?? string.Empty; // LireReponse()
             valid = int.TryParse(input, out value) && value >= min && value <= max;
-            if (!valid)
-                Console.WriteLine("Entrée invalide. Veuillez recommencer."); // MessageErreur
+            //if (!valid)
+            //    Console.WriteLine("Entrée invalide. Veuillez recommencer."); // MessageErreur
         }
         while (!valid);
 
@@ -43,7 +43,7 @@ internal sealed class ConsoleUserInteractionService : IUserInteractionService //
             if (input == "o" || input == "y") return true;  // Oui
             if (input == "n") return false;                 // Non
 
-            Console.WriteLine("Réponse non valide. Tapez 'o' pour oui ou 'n' pour non."); // MessageErreur
+            //Console.WriteLine("Réponse non valide. Tapez 'o' pour oui ou 'n' pour non."); // MessageErreur
         }
         while (true);
     }

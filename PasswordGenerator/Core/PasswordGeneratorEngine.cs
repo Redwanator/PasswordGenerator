@@ -17,38 +17,66 @@ internal static class PasswordGeneratorEngine // MoteurGenerateurDeMotsDePasse
     /// </summary>
     internal static void Run() // Executer()
     {
-        ReplayOption option = ReplayOption.NewCriteria; // InitialisationOption
-
-        do
+        try
         {
-            // Si c’est la première fois ou si l’utilisateur veut de nouveaux critères
-            if (_lastCriteria == null || AskForNewCriteria(out option)) // DemanderNouveauxCriteres()
+            _lastCriteria = PasswordCriteriaBuilder.Build(_ui); // ConstruireCriteres()
+            GenerateAndPrintPassword(); // GenererEtAfficher()
+
+            ReplayChoice choice;
+
+            do
             {
-                _lastCriteria = PasswordCriteriaBuilder.Build(_ui); // ConstruireCriteres()
-            }
+                choice = AskForNewCriteria(); // DemanderNouveauxCriteres()
 
-            // Si l’utilisateur a choisi de quitter, passer à l’itération suivante (sortie juste après)
-            if (option == ReplayOption.Exit) continue;
+                if (choice.Option == ReplayOption.Exit) continue; // Quitter
 
-            // Génération et affichage du mot de passe
-            string password = PasswordGenerator.Generate(_lastCriteria); // GenererMotDePasse()
-            Console.WriteLine($"\nMot de passe généré : {password}");
-            Console.WriteLine(); // LigneVide()
+                if (choice.IsNewCriteria) // EstNouveauCriteres
+                {
+                    _lastCriteria = PasswordCriteriaBuilder.Build(_ui); // ConstruireCriteres()
+                }
+
+                GenerateAndPrintPassword(); // GenererEtAfficher()
+
+            } while (choice.Option != ReplayOption.Exit); // RépéterTantQuePasSortie
         }
-        while (option != ReplayOption.Exit); // RépéterTantQuePasSortie
+        catch (InvalidOperationException ex)
+        {
+            Console.WriteLine($"Erreur : {ex.Message}"); // MessageErreur
+        }
+    }
+
+
+    /// <summary>
+    /// Génère et affiche un mot de passe basé sur les critères actuels.
+    /// </summary>
+    private static void GenerateAndPrintPassword() // GenererEtAfficher()
+    {
+        if (_lastCriteria is null)
+            throw new InvalidOperationException("Les critères ne sont pas initialisés."); // CriteresAbsents
+
+        string password = PasswordGenerator.Generate(_lastCriteria); // GenererMotDePasse()
+        Console.WriteLine($"\nMot de passe généré : {password}");
+        Console.WriteLine(); // LigneVide()
     }
 
     /// <summary>
     /// Demande à l'utilisateur s'il souhaite utiliser de nouveaux critères.
     /// </summary>
-    private static bool AskForNewCriteria(out ReplayOption option) // DemanderNouveauxCriteres()
+    private static ReplayChoice AskForNewCriteria() // DemanderNouveauxCriteres()
     {
         Console.WriteLine("\nSouhaitez-vous générer un nouveau mot de passe ?");
         Console.WriteLine("1. Oui, avec les mêmes critères");
         Console.WriteLine("2. Oui, avec de nouveaux critères");
-        Console.WriteLine("Autre. Quitter");
+        Console.WriteLine("Autre. Non, quitter l'application");
 
-        option = _ui.GetReplayOption(); // ObtenirOptionRejouer()
-        return option == ReplayOption.NewCriteria;
+        ReplayOption option = _ui.GetReplayOption(); // ObtenirOptionRejouer()
+        bool isNew = option == ReplayOption.NewCriteria; // EstNouveau
+
+        return new ReplayChoice(isNew, option); // RetournerChoix
     }
+
+    /// <summary>
+    /// Représente le choix de l'utilisateur à la fin d'une génération.
+    /// </summary>
+    private readonly record struct ReplayChoice(bool IsNewCriteria, ReplayOption Option); // ChoixRejouer
 }
