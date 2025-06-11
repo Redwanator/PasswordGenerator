@@ -1,4 +1,5 @@
 ﻿using PasswordGenerator.Enums;
+using PasswordGenerator.Interfaces;
 using PasswordGenerator.Utils;
 
 namespace PasswordGenerator.Core;
@@ -8,6 +9,7 @@ namespace PasswordGenerator.Core;
 /// </summary>
 internal static class PasswordGeneratorEngine // MoteurGenerateurDeMotsDePasse
 {
+    private static readonly IUserInteractionService _ui = new ConsoleUserInteractionService(); // InterfaceUI
     private static PasswordCriteria? _lastCriteria; // DerniersCriteres
 
     /// <summary>
@@ -22,7 +24,7 @@ internal static class PasswordGeneratorEngine // MoteurGenerateurDeMotsDePasse
             // Si c’est la première fois ou si l’utilisateur veut de nouveaux critères
             if (_lastCriteria == null || AskForNewCriteria(out option)) // DemanderNouveauxCriteres()
             {
-                _lastCriteria = PasswordCriteriaBuilder.Build(); // ConstruireCriteres()
+                _lastCriteria = PasswordCriteriaBuilder.Build(_ui); // ConstruireCriteres()
             }
 
             // Si l’utilisateur a choisi de quitter, passer à l’itération suivante (sortie juste après)
@@ -36,7 +38,6 @@ internal static class PasswordGeneratorEngine // MoteurGenerateurDeMotsDePasse
         while (option != ReplayOption.Exit); // RépéterTantQuePasSortie
     }
 
-
     /// <summary>
     /// Demande à l'utilisateur s'il souhaite utiliser de nouveaux critères.
     /// </summary>
@@ -47,7 +48,7 @@ internal static class PasswordGeneratorEngine // MoteurGenerateurDeMotsDePasse
         Console.WriteLine("2. Oui, avec de nouveaux critères");
         Console.WriteLine("Autre. Quitter");
 
-        option = ConsoleUtils.GetReplayOption(); // ObtenirOptionRejouer()
+        option = _ui.GetReplayOption(); // ObtenirOptionRejouer()
         return option == ReplayOption.NewCriteria;
     }
 }

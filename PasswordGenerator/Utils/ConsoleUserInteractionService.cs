@@ -1,16 +1,17 @@
 ﻿using PasswordGenerator.Enums;
+using PasswordGenerator.Interfaces;
 
 namespace PasswordGenerator.Utils;
 
 /// <summary>
 /// Fournit des méthodes utilitaires pour interagir avec la console utilisateur.
 /// </summary>
-internal static class ConsoleUtils // OutilsConsole
+internal sealed class ConsoleUserInteractionService : IUserInteractionService // OutilsConsole
 {
     /// <summary>
     /// Demande à l'utilisateur un entier compris dans une plage spécifiée.
     /// </summary>
-    internal static int AskInt(string message, int min, int max) // DemanderEntier()
+    public int AskInt(string message, int min, int max) // DemanderEntier()
     {
         int value;
         bool valid;
@@ -30,7 +31,7 @@ internal static class ConsoleUtils // OutilsConsole
     /// <summary>
     /// Demande à l'utilisateur une réponse oui/non (o/n ou y/n).
     /// </summary>
-    internal static bool AskYesNo(string message) // DemanderOuiNon()
+    public bool AskYesNo(string message) // DemanderOuiNon()
     {
         string input; // ReponseUtilisateur
 
@@ -50,7 +51,7 @@ internal static class ConsoleUtils // OutilsConsole
     /// <summary>
     /// Retourne le choix de l'utilisateur pour rejouer avec les mêmes critères ou non.
     /// </summary>
-    internal static ReplayOption GetReplayOption() // ObtenirOptionRejouer()
+    public ReplayOption GetReplayOption() // ObtenirOptionRejouer()
     {
         string input = (Console.ReadLine() ?? string.Empty).Trim().ToLower(); // LireReponse()
 
