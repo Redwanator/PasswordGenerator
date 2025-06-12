@@ -38,7 +38,7 @@ internal sealed class PasswordGeneratorSession // SessionGenerateurDeMotDePasse
             }
             catch (InvalidOperationException ex)
             {
-                Console.WriteLine($"Erreur : {ex.Message}"); // MessageErreur
+                _ui.WriteMessage($"Erreur : {ex.Message}"); // MessageErreur
             }
 
             option = AskForNewCriteria(); // DemanderNouveauxCriteres()
@@ -56,9 +56,9 @@ internal sealed class PasswordGeneratorSession // SessionGenerateurDeMotDePasse
 
         string password = _generator.Generate(_lastCriteria); // GenererMotDePasse()
 
-        Console.WriteLine();
-        Console.WriteLine($"Mot de passe généré : {password}"); // AfficherMotDePasse
-        Console.WriteLine();
+        _ui.WriteMessage(string.Empty);
+        _ui.WriteMessage($"Mot de passe généré : {password}"); // AfficherMotDePasse
+        _ui.WriteMessage(string.Empty);
     }
 
     /// <summary>
@@ -66,10 +66,10 @@ internal sealed class PasswordGeneratorSession // SessionGenerateurDeMotDePasse
     /// </summary>
     private ReplayOption AskForNewCriteria() // DemanderNouveauxCriteres()
     {
-        Console.WriteLine("Souhaitez-vous générer un nouveau mot de passe ?");
-        Console.WriteLine("1. Oui, avec les mêmes critères");
-        Console.WriteLine("2. Oui, avec de nouveaux critères");
-        Console.WriteLine("Autre. Non, quitter l'application");
+        _ui.WriteMessage("Souhaitez-vous générer un nouveau mot de passe ?");
+        _ui.WriteMessage("1. Oui, avec les mêmes critères");
+        _ui.WriteMessage("2. Oui, avec de nouveaux critères");
+        _ui.WriteMessage("Autre. Non, quitter l'application");
 
         return _ui.GetReplayOption(); // ObtenirOptionRejouer()
     }

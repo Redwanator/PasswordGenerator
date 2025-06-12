@@ -22,7 +22,7 @@ internal sealed class PasswordCriteriaBuilder // ConstructeurDeCriteres
     /// </summary>
     internal PasswordCriteria Build() // Construire()
     {
-        Console.WriteLine("Configuration du mot de passe :");
+        _ui.WriteMessage("Configuration du mot de passe :");
 
         int length = _ui.AskInt("Longueur du mot de passe souhaitée", 4, 40); // longueur = DemanderEntier()
         PasswordCriteria criteria;
@@ -32,7 +32,7 @@ internal sealed class PasswordCriteriaBuilder // ConstructeurDeCriteres
             criteria = AskCriteria(length); // criteres = DemanderCriteres()
 
             if (!criteria.HasAtLeastOneOption()) // criteres.AuMoinsUneOption()
-                Console.WriteLine("Vous devez choisir au moins un type de caractère. Veuillez recommencer.");
+                _ui.WriteMessage("Vous devez choisir au moins un type de caractère. Veuillez recommencer.");
         }
         while (!criteria.HasAtLeastOneOption()); // criteres.AuMoinsUneOption()
 
