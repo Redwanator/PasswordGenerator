@@ -8,15 +8,15 @@ internal enum ReplayOption // OptionRejouer
     /// <summary>
     /// Générer un mot de passe avec les mêmes critères.
     /// </summary>
-    SameCriteria, // MemesCriteres
+    SameCriteria,   // MemesCriteres
 
     /// <summary>
     /// Générer un mot de passe avec de nouveaux critères.
     /// </summary>
-    NewCriteria, // NouveauxCriteres
+    NewCriteria,    // NouveauxCriteres
 
     /// <summary>
     /// Quitter l'application.
     /// </summary>
-    Exit // Quitter
+    Exit            // Quitter
 }

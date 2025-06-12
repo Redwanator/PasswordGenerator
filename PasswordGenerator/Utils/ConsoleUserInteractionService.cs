@@ -4,41 +4,42 @@ using PasswordGenerator.Interfaces;
 namespace PasswordGenerator.Utils;
 
 /// <summary>
-/// Fournit des méthodes utilitaires pour interagir avec la console utilisateur.
+/// Fournit des méthodes utilitaires pour interagir avec l'utilisateur via la console.
 /// </summary>
 internal sealed class ConsoleUserInteractionService : IUserInteractionService // OutilsConsole
 {
     /// <summary>
-    /// Demande à l'utilisateur un entier compris dans une plage spécifiée.
+    /// Demande à l'utilisateur de saisir un entier dans une plage spécifiée.
     /// </summary>
     public int AskInt(string message, int min, int max) // DemanderEntier()
     {
         int value;
         bool valid;
+
         do
         {
             Console.Write($"{message} ({min}-{max}) : "); // AfficherQuestion
             string input = Console.ReadLine() ?? string.Empty; // LireReponse()
+
             valid = int.TryParse(input, out value) && value >= min && value <= max;
+
             //if (!valid)
             //    Console.WriteLine("Entrée invalide. Veuillez recommencer."); // MessageErreur
-        }
-        while (!valid);
+
+        } while (!valid);
 
         return value;
     }
 
     /// <summary>
-    /// Demande à l'utilisateur une réponse oui/non (o/n ou y/n).
+    /// Demande à l'utilisateur de répondre par oui ou non (o/n ou y/n).
     /// </summary>
     public bool AskYesNo(string message) // DemanderOuiNon()
     {
-        string input; // ReponseUtilisateur
-
         do
         {
             Console.Write($"{message} (o/n) : "); // AfficherQuestion
-            input = (Console.ReadLine() ?? string.Empty).Trim().ToLower(); // LireReponse()
+            string input = (Console.ReadLine() ?? string.Empty).Trim().ToLower(); // LireReponse()
 
             if (input == "o" || input == "y") return true;  // Oui
             if (input == "n") return false;                 // Non
@@ -49,7 +50,7 @@ internal sealed class ConsoleUserInteractionService : IUserInteractionService //
     }
 
     /// <summary>
-    /// Retourne le choix de l'utilisateur pour rejouer avec les mêmes critères ou non.
+    /// Demande à l'utilisateur s'il souhaite générer un autre mot de passe.
     /// </summary>
     public ReplayOption GetReplayOption() // ObtenirOptionRejouer()
     {

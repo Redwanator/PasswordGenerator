@@ -25,7 +25,6 @@ internal sealed class PasswordCriteriaBuilder // ConstructeurDeCriteres
         Console.WriteLine("Configuration du mot de passe :");
 
         int length = _ui.AskInt("Longueur du mot de passe souhaitée", 4, 40); // longueur = DemanderEntier()
-
         PasswordCriteria criteria;
 
         do
@@ -34,8 +33,8 @@ internal sealed class PasswordCriteriaBuilder // ConstructeurDeCriteres
 
             if (!criteria.HasAtLeastOneOption()) // criteres.AuMoinsUneOption()
                 Console.WriteLine("Vous devez choisir au moins un type de caractère. Veuillez recommencer.");
-
-        } while (!criteria.HasAtLeastOneOption()); // criteres.AuMoinsUneOption()
+        }
+        while (!criteria.HasAtLeastOneOption()); // criteres.AuMoinsUneOption()
 
         return criteria;
     }
@@ -45,10 +44,10 @@ internal sealed class PasswordCriteriaBuilder // ConstructeurDeCriteres
     /// </summary>
     private PasswordCriteria AskCriteria(int length) // DemanderCriteres(longueur)
     {
-        bool includeLowercase = _ui.AskYesNo("Inclure des lettres minuscules ?");    // inclureMinuscules = DemanderOuiNon()
-        bool includeUppercase = _ui.AskYesNo("Inclure des lettres majuscules ?");    // inclureMajuscules = DemanderOuiNon()
-        bool includeDigits = _ui.AskYesNo("Inclure des chiffres ?");              // inclureChiffres = DemanderOuiNon()
-        bool includeSymbols = _ui.AskYesNo("Inclure des symboles ?");              // inclureSymboles = DemanderOuiNon()
+        bool includeLowercase = _ui.AskYesNo("Inclure des lettres minuscules ?");   // inclureMinuscules = DemanderOuiNon()
+        bool includeUppercase = _ui.AskYesNo("Inclure des lettres majuscules ?");   // inclureMajuscules = DemanderOuiNon()
+        bool includeDigits = _ui.AskYesNo("Inclure des chiffres ?");                // inclureChiffres = DemanderOuiNon()
+        bool includeSymbols = _ui.AskYesNo("Inclure des symboles ?");               // inclureSymboles = DemanderOuiNon()
 
         return new PasswordCriteria(length, includeLowercase, includeUppercase, includeDigits, includeSymbols);
     }
