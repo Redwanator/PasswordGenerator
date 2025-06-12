@@ -1,4 +1,6 @@
 ﻿using PasswordGenerator.Core;
+using PasswordGenerator.Interfaces;
+using PasswordGenerator.Utils;
 
 namespace PasswordGenerator;
 
@@ -7,8 +9,11 @@ namespace PasswordGenerator;
 /// </summary>
 internal static class Program
 {
+    private static readonly IUserInteractionService _ui = new ConsoleUserInteractionService(); // InterfaceUtilisateur
+    private static readonly PasswordGeneratorSession _session = new(_ui); // Session
+
     private static void Main()
     {
-        PasswordGeneratorEngine.Run(); // Executer()
+        _session.Run(); // Executer()
     }
 }

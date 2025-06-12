@@ -1,25 +1,33 @@
 ﻿using PasswordGenerator.Enums;
 using PasswordGenerator.Interfaces;
-using PasswordGenerator.Utils;
 
 namespace PasswordGenerator.Core;
 
 /// <summary>
-/// Orchestrateur principal de la génération de mots de passe.
+/// Représente une session de génération de mots de passe.
 /// </summary>
-internal static class PasswordGeneratorEngine // MoteurGenerateurDeMotsDePasse
+internal sealed class PasswordGeneratorSession // SessionGenerateurDeMotDePasse
 {
-    private static readonly IUserInteractionService _ui = new ConsoleUserInteractionService(); // InterfaceUI
-    private static PasswordCriteria? _lastCriteria; // DerniersCriteres
+    private readonly IUserInteractionService _ui; // InterfaceUtilisateur
+    private readonly PasswordGenerator _generator = new(); // Generateur
+    private PasswordCriteria? _lastCriteria;      // DerniersCriteres
 
     /// <summary>
-    /// Point d'entrée de l'orchestration. Gère la boucle principale du programme.
+    /// Initialise une nouvelle session avec le service d'interaction utilisateur spécifié.
     /// </summary>
-    internal static void Run() // Executer()
+    internal PasswordGeneratorSession(IUserInteractionService ui) // ConstructeurSession()
+    {
+        _ui = ui;
+    }
+
+    /// <summary>
+    /// Démarre la session de génération de mots de passe.
+    /// </summary>
+    internal void Run() // Executer()
     {
         try
         {
-            _lastCriteria = PasswordCriteriaBuilder.Build(_ui); // ConstruireCriteres()
+            _lastCriteria = new PasswordCriteriaBuilder(_ui).Build(); // ConstruireCriteres()
             GenerateAndPrintPassword(); // GenererEtAfficher()
 
             ReplayChoice choice;
@@ -32,7 +40,7 @@ internal static class PasswordGeneratorEngine // MoteurGenerateurDeMotsDePasse
 
                 if (choice.IsNewCriteria) // EstNouveauCriteres
                 {
-                    _lastCriteria = PasswordCriteriaBuilder.Build(_ui); // ConstruireCriteres()
+                    _lastCriteria = new PasswordCriteriaBuilder(_ui).Build(); // ConstruireCriteres()
                 }
 
                 GenerateAndPrintPassword(); // GenererEtAfficher()
@@ -45,16 +53,15 @@ internal static class PasswordGeneratorEngine // MoteurGenerateurDeMotsDePasse
         }
     }
 
-
     /// <summary>
     /// Génère et affiche un mot de passe basé sur les critères actuels.
     /// </summary>
-    private static void GenerateAndPrintPassword() // GenererEtAfficher()
+    private void GenerateAndPrintPassword() // GenererEtAfficher()
     {
         if (_lastCriteria is null)
             throw new InvalidOperationException("Les critères ne sont pas initialisés."); // CriteresAbsents
 
-        string password = PasswordGenerator.Generate(_lastCriteria); // GenererMotDePasse()
+        string password = _generator.Generate(_lastCriteria); // GenererMotDePasse()
         Console.WriteLine($"\nMot de passe généré : {password}");
         Console.WriteLine(); // LigneVide()
     }
@@ -62,7 +69,7 @@ internal static class PasswordGeneratorEngine // MoteurGenerateurDeMotsDePasse
     /// <summary>
     /// Demande à l'utilisateur s'il souhaite utiliser de nouveaux critères.
     /// </summary>
-    private static ReplayChoice AskForNewCriteria() // DemanderNouveauxCriteres()
+    private ReplayChoice AskForNewCriteria() // DemanderNouveauxCriteres()
     {
         Console.WriteLine("\nSouhaitez-vous générer un nouveau mot de passe ?");
         Console.WriteLine("1. Oui, avec les mêmes critères");
