@@ -63,4 +63,12 @@ internal sealed class ConsoleUserInteractionService : IUserInteractionService //
             _ => ReplayOption.Exit              // Quitter
         };
     }
+
+    /// <summary>
+    /// Affiche un message à l'utilisateur.
+    /// </summary>
+    public void WriteMessage(string message) // AfficherMessage()
+    {
+        Console.WriteLine(message);
+    }
 }

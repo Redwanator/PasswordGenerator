@@ -28,4 +28,10 @@ internal interface IUserInteractionService
     /// </summary>
     /// <returns>Une option représentant le choix de l'utilisateur.</returns>
     ReplayOption GetReplayOption();                 // ObtenirOptionRejouer()
+
+    /// <summary>
+    /// Affiche un message à l'utilisateur.
+    /// </summary>
+    /// <param name="message">Message à afficher.</param>
+    void WriteMessage(string message);              // AfficherMessage()
 }
