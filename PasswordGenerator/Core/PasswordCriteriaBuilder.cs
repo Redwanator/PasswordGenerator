@@ -24,17 +24,15 @@ internal sealed class PasswordCriteriaBuilder // ConstructeurDeCriteres
     {
         _ui.WriteMessage("Configuration du mot de passe :");
 
-        int length = _ui.AskInt("Longueur du mot de passe souhaitée", 4, 40); // longueur = DemanderEntier()
-        PasswordCriteria criteria;
+        int length = _ui.AskLenght("Longueur du mot de passe souhaitée", 4, 40); // longueur = DemanderLongueur()
 
-        do
+        PasswordCriteria criteria = AskCriteria(length); // criteres = DemanderCriteres()
+
+        while (!criteria.HasAtLeastOneOption()) // criteres.AuMoinsUneOption()
         {
+            _ui.WriteMessage("Vous devez choisir au moins un type de caractère. Veuillez recommencer.");
             criteria = AskCriteria(length); // criteres = DemanderCriteres()
-
-            if (!criteria.HasAtLeastOneOption()) // criteres.AuMoinsUneOption()
-                _ui.WriteMessage("Vous devez choisir au moins un type de caractère. Veuillez recommencer.");
         }
-        while (!criteria.HasAtLeastOneOption()); // criteres.AuMoinsUneOption()
 
         return criteria;
     }
