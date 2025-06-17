@@ -11,7 +11,7 @@ internal sealed class ConsoleUserInteractionService : IUserInteractionService //
     /// <summary>
     /// Demande à l'utilisateur de saisir un entier dans une plage spécifiée.
     /// </summary>
-    public int AskLenght(string message, int min, int max) // DemanderLongueur()
+    public int AskLength(string message, int min, int max) // DemanderLongueur()
     {
         int value;
         bool valid;

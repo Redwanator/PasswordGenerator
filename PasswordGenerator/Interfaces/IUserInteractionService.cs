@@ -14,7 +14,7 @@ internal interface IUserInteractionService
     /// <param name="min">Valeur minimale autorisée.</param>
     /// <param name="max">Valeur maximale autorisée.</param>
     /// <returns>Un entier compris entre min et max.</returns>
-    int AskLenght(string message, int min, int max);   // DemanderLongueur()
+    int AskLength(string message, int min, int max);   // DemanderLongueur()
 
     /// <summary>
     /// Demande à l'utilisateur de répondre par oui ou non.

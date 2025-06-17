@@ -24,7 +24,7 @@ internal sealed class PasswordCriteriaBuilder // ConstructeurDeCriteres
     {
         _ui.WriteMessage("Configuration du mot de passe :");
 
-        int length = _ui.AskLenght("Longueur du mot de passe souhaitée", 4, 40); // longueur = DemanderLongueur()
+        int length = _ui.AskLength("Longueur du mot de passe souhaitée", 4, 40); // longueur = DemanderLongueur()
 
         PasswordCriteria criteria = AskCriteria(length); // criteres = DemanderCriteres()
 
