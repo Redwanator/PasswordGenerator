@@ -24,7 +24,7 @@ internal sealed class PasswordCriteriaBuilder // ConstructeurDeCriteres
     {
         _ui.WriteMessage("Configuration du mot de passe :");
 
-        int length = _ui.AskLength("Longueur du mot de passe souhaitée", 4, 40); // longueur = DemanderLongueur()
+        int length = _ui.AskIntInRange("Longueur du mot de passe souhaitée", 4, 40); // longueur = DemanderEntierDansPlage()
 
         PasswordCriteria criteria = AskCriteria(length); // criteres = DemanderCriteres()
 
@@ -42,11 +42,13 @@ internal sealed class PasswordCriteriaBuilder // ConstructeurDeCriteres
     /// </summary>
     private PasswordCriteria AskCriteria(int length) // DemanderCriteres(longueur)
     {
-        bool includeLowercase = _ui.AskYesNo("Inclure des lettres minuscules ?");   // inclureMinuscules = DemanderOuiNon()
-        bool includeUppercase = _ui.AskYesNo("Inclure des lettres majuscules ?");   // inclureMajuscules = DemanderOuiNon()
-        bool includeDigits = _ui.AskYesNo("Inclure des chiffres ?");                // inclureChiffres = DemanderOuiNon()
-        bool includeSymbols = _ui.AskYesNo("Inclure des symboles ?");               // inclureSymboles = DemanderOuiNon()
-
-        return new PasswordCriteria(length, includeLowercase, includeUppercase, includeDigits, includeSymbols);
+        return new PasswordCriteria
+        {
+            Length = length,
+            IncludeLowercase = _ui.AskYesNo("Inclure des lettres minuscules ?"),   // inclureMinuscules = DemanderOuiNon()
+            IncludeUppercase = _ui.AskYesNo("Inclure des lettres majuscules ?"),   // inclureMajuscules = DemanderOuiNon()
+            IncludeDigits = _ui.AskYesNo("Inclure des chiffres ?"),                // inclureChiffres = DemanderOuiNon()
+            IncludeSymbols = _ui.AskYesNo("Inclure des symboles ?")                // inclureSymboles = DemanderOuiNon()
+        };
     }
 }
